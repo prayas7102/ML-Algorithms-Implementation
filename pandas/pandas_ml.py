@@ -118,3 +118,23 @@ df1 = pd.DataFrame(dic)
 df2=pd.concat([df1, df])
 print(df)
 print(df2)
+print("\n")
+
+# quartile
+print(df.describe())
+print("\n")
+print(df.list4.quantile([0.25, 0.75]))
+print("\n")
+
+# fill na
+print(df['list4'][1])
+df['list4'][1] = np.NaN
+print(df)
+print(df.list4.median())
+df = df.fillna(df.list4.min()) # median, mean etc.
+print(df)
+print("\n")
+
+# loc, iloc
+print(df.iloc[0])
+print(df.loc[0])
