@@ -8,9 +8,13 @@ import matplotlib.pyplot as plt
 excel_file_path = "./bhp.csv"
 df = pd.read_csv(excel_file_path)
 
+lower_quantile = 0.01
+higher_quantile = 0.99
+std_deviation = 3
+
 # Display the 01th and 99th percentiles of the 'price_per_sqft' column
 print("01th and 99th percentiles of 'price_per_sqft' column:")
-print(df.price.quantile([0.01, 0.99]))
+print(df.price_per_sqft.quantile([lower_quantile, higher_quantile]))
 print("\n")
 
 # Display descriptive statistics of the 'price' column
@@ -18,9 +22,12 @@ print("Descriptive statistics of 'price' column:")
 print(df.describe())
 print("\n")
 
+# Apply log with base 10 to the 'price' column
+df['price_per_sqft'] = df['price_per_sqft'].apply(np.log10)
+
 # Calculate the 01th and 99th percentiles
-per_01 = df.price_per_sqft.quantile(0.01)
-per_99 = df.price_per_sqft.quantile(0.99)
+per_01 = df.price_per_sqft.quantile(lower_quantile)
+per_99 = df.price_per_sqft.quantile(higher_quantile)
 
 # Filter out outliers based on the percentiles
 df_no_outlier = df[(df.price_per_sqft > per_01) & (df.price_per_sqft < per_99)]
@@ -31,11 +38,8 @@ df_no_outlier["zscore"] = (
 
 # removing outlier using zscore
 df_no_outlier = df_no_outlier[
-    (df_no_outlier["zscore"] > -2) & (df_no_outlier["zscore"] < 2)
+    (df_no_outlier["zscore"] > -std_deviation) & (df_no_outlier["zscore"] < std_deviation)
 ]
-
-# Apply log with base 10 to the 'price' column
-df_no_outlier['price'] = df_no_outlier['price'].apply(np.log10)
 
 # Display lengths of the original and filtered DataFrames
 print(

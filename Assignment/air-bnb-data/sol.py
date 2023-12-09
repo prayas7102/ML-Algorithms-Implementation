@@ -13,10 +13,17 @@ print("Original 'price' column:")
 print(df.price)
 print("\n")
 
-# Display the 25th and 75th percentiles of the 'price' column
-print("25th and 75th percentiles of 'price' column:")
-print(df.price.quantile([0.25, 0.75]))
+lower_quantile = 0.01
+higher_quantile = 0.99
+std_deviation = 3
+
+# Display the 01th and 99th percentiles of the 'price' column
+print("01th and 99th percentiles of 'price' column:")
+print(df.price.quantile([lower_quantile, higher_quantile]))
 print("\n")
+
+# Apply log with base 10 to the 'price' column
+df['price'] = df['price'].apply(np.log10)
 
 # Display descriptive statistics of the 'price' column
 print("Descriptive statistics of 'price' column:")
@@ -24,8 +31,8 @@ print(df.price.describe())
 print("\n")
 
 # Calculate the 25th and 75th percentiles
-per_25 = df.price.quantile(0.01)
-per_75 = df.price.quantile(0.99)
+per_25 = df.price.quantile(lower_quantile)
+per_75 = df.price.quantile(higher_quantile)
 
 # Filter out outliers based on the percentiles
 df_no_outlier = df[(df.price > per_25) & (df.price < per_75)]
@@ -36,11 +43,8 @@ df_no_outlier["zscore"] = (
 
 # removing outlier using zscore
 df_no_outlier = df_no_outlier[
-    (df_no_outlier["zscore"] > -2) & (df_no_outlier["zscore"] < 2)
+    (df_no_outlier["zscore"] > -std_deviation) & (df_no_outlier["zscore"] < std_deviation)
 ]
-
-# Apply log with base 10 to the 'price' column
-df_no_outlier['price'] = df_no_outlier['price'].apply(np.log10)
 
 # Display lengths of the original and filtered DataFrames
 print(
@@ -75,5 +79,5 @@ if os.path.exists(csv_file_path):
 df_no_outlier.to_csv(csv_file_path, index=False)
 
 # normal distribution
-sn.histplot(data=df_no_outlier["price"], kde=True, log_scale=False)
+sn.histplot(data=df_no_outlier["price"], kde=True, log_scale=True)
 plt.show()
