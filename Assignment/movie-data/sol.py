@@ -9,18 +9,19 @@ def get_MAD(s, median):
     diff = abs(s - median)
     return np.median(diff)
 
+
 def get_modified_z_score(x, median, MAD):
     return 0.6745 * (x - median) / MAD
+
 
 # Exercise
 excel_file_path = "./movie_revenues.csv"
 df = pd.read_csv(excel_file_path)
-
+# reducing revenue column of df by 1000000 times
 df["revenue"] = df["revenue"] / 1000000
 lower_quantile = 0.25
 higher_quantile = 0.75
 std_deviation = 3.5
-print(df["revenue"].std())
 
 # Calculate the 01th and 99th percentiles
 per_01 = df["revenue"].quantile(lower_quantile)
@@ -28,15 +29,22 @@ per_99 = df["revenue"].quantile(higher_quantile)
 
 # Filter out outliers based on the percentiles
 df = df[(df["revenue"] > per_01) & (df["revenue"] < per_99)]
-print(df["revenue"].std())
 
+# get median
 median = np.median(df["revenue"])
+
+# get MAD (median(|x-median|))
 MAD = get_MAD(df["revenue"], median)
 
 # removing outlier using zscore
-df['modifies_z_score'] = get_modified_z_score(df["revenue"], median, MAD)
+df["modifies_z_score"] = get_modified_z_score(df["revenue"], median, MAD)
 df_no_outlier = df[(df["modifies_z_score"] < std_deviation)]
-print(df_no_outlier["revenue"].std())
+
+print(
+    "STD before and after outlier removal",
+    df["revenue"].std(),
+    df_no_outlier["revenue"].std(),
+)
 
 # Specify the path where you want to save the CSV file
 csv_file_path = "./output_file.csv"
