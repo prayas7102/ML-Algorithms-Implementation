@@ -33,6 +33,8 @@ print("\n")
 # Calculate the 25th and 75th percentiles
 per_25 = df.price.quantile(lower_quantile)
 per_75 = df.price.quantile(higher_quantile)
+per_25 -= 1.5*(per_75 - per_25)
+per_75 += 1.5*(per_75 - per_25)
 
 # Filter out outliers based on the percentiles
 df_no_outlier = df[(df.price > per_25) & (df.price < per_75)]
