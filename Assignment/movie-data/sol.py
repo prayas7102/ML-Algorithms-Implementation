@@ -26,9 +26,11 @@ std_deviation = 3.5
 # Calculate the 01th and 99th percentiles
 per_01 = df["revenue"].quantile(lower_quantile)
 per_99 = df["revenue"].quantile(higher_quantile)
+per_01 -= 1.5*(per_99 - per_01)
+per_99 += 1.5*(per_99 - per_01)
 
 # Filter out outliers based on the percentiles
-df = df[(df["revenue"] > per_01) & (df["revenue"] < per_99)]
+df_no_outlier = df[(df["revenue"] > per_01) & (df["revenue"] < per_99)]
 
 # get median
 median = np.median(df["revenue"])
@@ -37,8 +39,8 @@ median = np.median(df["revenue"])
 MAD = get_MAD(df["revenue"], median)
 
 # removing outlier using zscore
-df["modifies_z_score"] = get_modified_z_score(df["revenue"], median, MAD)
-df_no_outlier = df[(df["modifies_z_score"] < std_deviation)]
+df_no_outlier["modifies_z_score"] = get_modified_z_score(df_no_outlier["revenue"], median, MAD)
+df_no_outlier = df_no_outlier[(df_no_outlier["modifies_z_score"] < std_deviation)]
 
 print(
     "STD before and after outlier removal",
