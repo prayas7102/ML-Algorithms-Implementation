@@ -19,8 +19,9 @@ excel_file_path = "./movie_revenues.csv"
 df = pd.read_csv(excel_file_path)
 # reducing revenue column of df by 1000000 times
 df["revenue"] = df["revenue"] / 1000000
-lower_quantile = 0.25
-higher_quantile = 0.75
+df = df.sort_values(by='revenue')
+lower_quantile = 0.01
+higher_quantile = 0.99
 std_deviation = 3.5
 
 # Calculate the 01th and 99th percentiles

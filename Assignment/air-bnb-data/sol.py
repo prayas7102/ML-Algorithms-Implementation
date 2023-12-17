@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import os
 import seaborn as sn
 import matplotlib.pyplot as plt
@@ -23,7 +22,7 @@ print(df.price.quantile([lower_quantile, higher_quantile]))
 print("\n")
 
 # Apply log with base 10 to the 'price' column
-df['price'] = df['price'].apply(np.log10)
+# df['price'] = df['price'].apply(np.log10)
 
 # Display descriptive statistics of the 'price' column
 print("Descriptive statistics of 'price' column:")
@@ -81,5 +80,6 @@ if os.path.exists(csv_file_path):
 df_no_outlier.to_csv(csv_file_path, index=False)
 
 # normal distribution
+# kde = kernel density estimator
 sn.histplot(data=df_no_outlier["price"], kde=True, log_scale=True)
 plt.show()
