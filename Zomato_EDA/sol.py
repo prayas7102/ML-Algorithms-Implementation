@@ -29,17 +29,47 @@ country_val = df_merged.Country.value_counts().values
 country_name = df_merged.Country.value_counts().index
 # plt.pie(country_val[:3], labels=country_name[:3], autopct="%.2f%%")
 # plt.show()
+
+# tottal count for each rating number
+# After grouping, .size() counts the number of rows within each group.
+# This means for each unique combination of Aggregate rating,
+# Rating color, and Rating text
 ratings = (
     df_merged.groupby(["Aggregate rating", "Rating color", "Rating text"])
     .size()
-    .reset_index() 
+    .reset_index()
     .rename(columns={0: "Rating Count"})
 )
 # print(ratings.head())
+# sns.barplot(data=ratings, x="Aggregate rating", y="Rating Count", hue="Rating color")
+# plt.show()
+
 # countries where rating color is white or has given zero ratings
 # reset_index to Converting Grouped Data to DataFrame:
-zero_rating = df_merged[df_merged["Rating color"] == "White"].groupby("Country").size().reset_index()
+zero_rating = (
+    df_merged[df_merged["Rating color"] == "White"]
+    .groupby("Country")
+    .size()
+    .reset_index()
+    .rename(columns={0: "zero count"})
+)
 # print(zero_rating)
-# 
-sns.barplot(data=ratings, x="Aggregate rating", y="Rating Count", hue="Rating color")
-plt.show()
+
+# currency for each country
+currency = (
+    df_merged.groupby(["Country", "Currency"])
+    .size()
+    .reset_index()
+    .rename(columns={0: "currency occurences in table"})
+)
+# print(currency.head())
+
+# countries with online delivery option
+delivery_option = (
+    df_merged[df_merged["Has Online delivery"] != "No"]
+    .groupby("Country")
+    .size()
+    .reset_index()
+    .rename(columns={0: "Online delivery count"})
+)
+print(delivery_option.head())
