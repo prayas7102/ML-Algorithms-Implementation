@@ -87,3 +87,8 @@ delivery_option_yes = (
     .rename(columns={0: "Online delivery count"})
 )
 # print(delivery_option_yes.head())
+
+# top 10 cuisines
+cuisine_val = df_merged.Cuisines.value_counts()
+x = (cuisine_val.sort_values(ascending=False))
+print(x[:10])
