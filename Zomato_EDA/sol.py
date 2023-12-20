@@ -22,11 +22,16 @@ feat_with_null_val = [feat for feat in df.columns if df.isnull()[feat].sum() > 0
 # print(feat_with_null_val)
 df_country = pd.read_excel("./Country-Code.xlsx")
 # print(df_country.head())
+
 df_merged = pd.merge(df, df_country, on="Country Code", how="left")
 # print(df_merged.head())
 # print(df_merged.Country.value_counts())
-country_val = df_merged.Country.value_counts().values
-country_name = df_merged.Country.value_counts().index
+
+# total no. of occurances ofcountry
+country_val = df_merged.Country.value_counts()
+# print(country_val)
+# print(country_val.values)
+# print(country_val.index)
 # plt.pie(country_val[:3], labels=country_name[:3], autopct="%.2f%%")
 # plt.show()
 
@@ -64,12 +69,21 @@ currency = (
 )
 # print(currency.head())
 
+# countries with/without online delivery option
+delivery_option_yes_no = (
+    df_merged.groupby(["Country", "Has Online delivery"])
+    .size()
+    .reset_index()
+    .rename(columns={0: "delivery_option_yes_no occurences in table"})
+)
+# print(delivery_option_yes_no.head())
+
 # countries with online delivery option
-delivery_option = (
+delivery_option_yes = (
     df_merged[df_merged["Has Online delivery"] != "No"]
     .groupby("Country")
     .size()
     .reset_index()
     .rename(columns={0: "Online delivery count"})
 )
-print(delivery_option.head())
+# print(delivery_option_yes.head())
