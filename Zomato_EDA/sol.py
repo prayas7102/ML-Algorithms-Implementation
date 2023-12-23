@@ -58,7 +58,7 @@ zero_rating = (
     .reset_index()
     .rename(columns={0: "zero count"})
 )
-# print(zero_rating)
+print(zero_rating)
 
 # currency for each country
 currency = (
@@ -90,5 +90,5 @@ delivery_option_yes = (
 
 # top 10 cuisines
 cuisine_val = df_merged.Cuisines.value_counts()
-x = (cuisine_val.sort_values(ascending=False))
+x = cuisine_val.sort_values(ascending=False)
 print(x[:10])

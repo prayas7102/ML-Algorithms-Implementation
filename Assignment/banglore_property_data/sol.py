@@ -23,13 +23,13 @@ print(df.describe())
 print("\n")
 
 # Apply log with base 10 to the 'price' column
-df['price_per_sqft'] = df['price_per_sqft'].apply(np.log10)
+df["price_per_sqft"] = df["price_per_sqft"].apply(np.log10)
 
 # Calculate the 01th and 99th percentiles
 per_01 = df.price_per_sqft.quantile(lower_quantile)
 per_99 = df.price_per_sqft.quantile(higher_quantile)
-per_01 -= 1.5*(per_99 - per_01)
-per_99 += 1.5*(per_99 - per_01)
+per_01 -= 1.5 * (per_99 - per_01)
+per_99 += 1.5 * (per_99 - per_01)
 
 # Filter out outliers based on the percentiles
 df_no_outlier = df[(df.price_per_sqft > per_01) & (df.price_per_sqft < per_99)]
@@ -40,7 +40,8 @@ df_no_outlier["zscore"] = (
 
 # removing outlier using zscore
 df_no_outlier = df_no_outlier[
-    (df_no_outlier["zscore"] > -std_deviation) & (df_no_outlier["zscore"] < std_deviation)
+    (df_no_outlier["zscore"] > -std_deviation)
+    & (df_no_outlier["zscore"] < std_deviation)
 ]
 
 # Display lengths of the original and filtered DataFrames

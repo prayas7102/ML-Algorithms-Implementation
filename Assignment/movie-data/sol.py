@@ -19,7 +19,7 @@ excel_file_path = "./movie_revenues.csv"
 df = pd.read_csv(excel_file_path)
 # reducing revenue column of df by 1000000 times
 df["revenue"] = df["revenue"] / 1000000
-df = df.sort_values(by='revenue')
+df = df.sort_values(by="revenue")
 lower_quantile = 0.01
 higher_quantile = 0.99
 std_deviation = 3.5
@@ -27,8 +27,8 @@ std_deviation = 3.5
 # Calculate the 01th and 99th percentiles
 per_01 = df["revenue"].quantile(lower_quantile)
 per_99 = df["revenue"].quantile(higher_quantile)
-per_01 -= 1.5*(per_99 - per_01)
-per_99 += 1.5*(per_99 - per_01)
+per_01 -= 1.5 * (per_99 - per_01)
+per_99 += 1.5 * (per_99 - per_01)
 
 # Filter out outliers based on the percentiles
 df_no_outlier = df[(df["revenue"] > per_01) & (df["revenue"] < per_99)]
@@ -40,7 +40,9 @@ median = np.median(df["revenue"])
 MAD = get_MAD(df["revenue"], median)
 
 # removing outlier using zscore
-df_no_outlier["modifies_z_score"] = get_modified_z_score(df_no_outlier["revenue"], median, MAD)
+df_no_outlier["modifies_z_score"] = get_modified_z_score(
+    df_no_outlier["revenue"], median, MAD
+)
 df_no_outlier = df_no_outlier[(df_no_outlier["modifies_z_score"] < std_deviation)]
 
 print(
