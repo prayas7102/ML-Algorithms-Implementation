@@ -18,6 +18,8 @@ df = pd.read_csv(excel_file_path, encoding="latin-1")
 # print(df.dtypes)
 # sns.heatmap(df.isnull())
 # plt.show()
+
+# get all features/columns with null value
 feat_with_null_val = [feat for feat in df.columns if df.isnull()[feat].sum() > 0]
 # print(feat_with_null_val)
 df_country = pd.read_excel("./Country-Code.xlsx")
@@ -27,7 +29,7 @@ df_merged = pd.merge(df, df_country, on="Country Code", how="left")
 # print(df_merged.head())
 # print(df_merged.Country.value_counts())
 
-# total no. of occurances ofcountry
+# total no. of occurances of country
 country_val = df_merged.Country.value_counts()
 # print(country_val)
 # print(country_val.values)

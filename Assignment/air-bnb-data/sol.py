@@ -14,7 +14,7 @@ print("\n")
 
 lower_quantile = 0.01
 higher_quantile = 0.99
-std_deviation = 3
+zscore_std_deviation = 3
 
 # Display the 01th and 99th percentiles of the 'price' column
 print("01th and 99th percentiles of 'price' column:")
@@ -44,8 +44,8 @@ df_no_outlier["zscore"] = (
 
 # removing outlier using zscore
 df_no_outlier = df_no_outlier[
-    (df_no_outlier["zscore"] > -std_deviation)
-    & (df_no_outlier["zscore"] < std_deviation)
+    (df_no_outlier["zscore"] > -zscore_std_deviation)
+    & (df_no_outlier["zscore"] < zscore_std_deviation)
 ]
 
 # Display lengths of the original and filtered DataFrames
