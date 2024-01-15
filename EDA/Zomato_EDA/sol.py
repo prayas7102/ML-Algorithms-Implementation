@@ -12,7 +12,7 @@ df = pd.read_csv(excel_file_path, encoding="latin-1")
 # print(df.info())
 # finding null values in dataframe
 # print(df.isnull())
-# print(df.isnull().sum())
+print(df.isnull().sum())
 # print(df.isnull().sum()["Cuisines"])
 # print(df.isnull().sum() > 0)
 # print(df.dtypes)
@@ -60,7 +60,7 @@ zero_rating = (
     .reset_index()
     .rename(columns={0: "zero count"})
 )
-print(zero_rating)
+# print(zero_rating)
 
 # currency for each country
 currency = (
@@ -93,4 +93,4 @@ delivery_option_yes = (
 # top 10 cuisines
 cuisine_val = df_merged.Cuisines.value_counts()
 x = cuisine_val.sort_values(ascending=False)
-print(x[:10])
+# print(x[:10])
